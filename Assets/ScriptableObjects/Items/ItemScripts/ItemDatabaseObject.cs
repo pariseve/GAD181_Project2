@@ -20,11 +20,11 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
     public void OnBeforeSerialize()
     {
-        GetItem = new Dictionary<int, ItemObject>();
+        //GetItem = new Dictionary<int, ItemObject>();
     }
 
-    internal int GetID(Item item)
-    {
-        throw new NotImplementedException();
-    }
+    //internal int GetID(Item item)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }

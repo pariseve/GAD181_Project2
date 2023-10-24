@@ -5,14 +5,18 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
     public InventoryObject inventory;
+    public DisplayInventory displayInventory;
 
     public void OnTriggerEnter(Collider other)
     {
         Debug.Log("Player has collided with item");
-        var item = other.GetComponent<GroundItem>();
-        if (item)
+        var groundItem = other.GetComponent<GroundItem>();
+        if (groundItem)
         {
-            inventory.AddItem(new Item( item.item), 1);
+            ItemObject itemObject = groundItem.item;
+            inventory.AddItem(itemObject, 1);
+            // Call the UpdateDisplay method from the DisplayInventory component
+            displayInventory.UpdateDisplay();
             Destroy(other.gameObject);
         }
     }
