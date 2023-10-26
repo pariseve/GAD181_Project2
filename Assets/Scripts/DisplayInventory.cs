@@ -48,11 +48,11 @@ public class DisplayInventory : MonoBehaviour
                 Debug.Log("Instantiated prefab: " + obj.name);
 
                 // Use null conditional operator to access the Image component
-                Image imageComponent = obj?.transform.GetChild(0)?.GetComponentInChildren<Image>();
-                if (imageComponent != null)
-                {
-                    imageComponent.sprite = inventory.database.GetItem[slot.item.Id].uiDisplay;
-                }
+                //Image imageComponent = obj?.transform.GetChild(0)?.GetComponentInChildren<Image>();
+                //if (imageComponent != null)
+                //{
+                //    imageComponent.sprite = inventory.database.GetItem[slot.item.Id].uiDisplay;
+                //}
 
                 obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
 
