@@ -16,6 +16,6 @@ MonoBehaviour:
   uiDisplay: {fileID: 21300000, guid: 0cd68cab788201445a1cc919f89a143d, type: 3}
   type: 0
   description: "The slaughtered rabbit, it's measly carcass won't satiate the beast
-    for long. \nLeaving it out would be a disgrace to the deceased animal, however,
-    it may also tempt other nearby creatures."
+    for long. \nLeaving it on the ground would be a disgrace to the deceased animal,
+    however it may also be useful to tempt other nearby creatures."
   sacrificeValue: 10
