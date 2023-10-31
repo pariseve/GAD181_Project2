@@ -2146,6 +2146,7 @@ CapsuleCollider:
   m_Height: 2.29
   m_Direction: 1
   m_Center: {x: 0, y: -0.05, z: 0}
+
 --- !u!65 &1838222752
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2235,6 +2236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 3c61a239fe8e8c649828178e06063bb2, type: 2}
+
 --- !u!1 &1879203095
 GameObject:
   m_ObjectHideFlags: 0

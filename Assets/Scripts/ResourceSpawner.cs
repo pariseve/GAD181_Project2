@@ -37,16 +37,12 @@ public class ResourceSpawner : MonoBehaviour
         Vector3 spawnPosition = CalculateRandomSpawnPosition();
         Debug.Log("Calculating Distance");
 
-        // Ensure the new position is a fair distance from the last spawn position
-        //while (Vector3.Distance(spawnPosition, lastSpawnPosition) < 8f)
-        //{
-        //    spawnPosition = CalculateRandomSpawnPosition();
-        //}
 
         lastSpawnPosition = spawnPosition;
 
-        // Manually set the height to avoid clipping into the ground
-        spawnPosition = new Vector3(spawnPosition.x, 0.25f, spawnPosition.z); // Adjust the Y-coordinate (2.0f is just an example height)
+        // manually set the height to avoid clipping into the ground
+        spawnPosition = new Vector3(spawnPosition.x, 0.25f, spawnPosition.z); 
+
 
         // Spawn the selected resource at the calculated position
         Debug.Log("Resource has been generated");
@@ -61,11 +57,15 @@ public class ResourceSpawner : MonoBehaviour
 
     private Vector3 CalculateRandomSpawnPosition()
     {
-        Vector3 randomOffset = new Vector3(
-            Random.Range(-spawnPlane.localScale.x / 2, spawnPlane.localScale.x / 2),
-            0f,
-            Random.Range(-spawnPlane.localScale.z / 2, spawnPlane.localScale.z / 2)
-        );
+    
+        // get the renderer component of the spawnPlane
+        Renderer renderer = spawnPlane.GetComponent<Renderer>();
+        //if (renderer == null)
+        //{
+        //    Debug.LogError("The spawnPlane is missing a Renderer component.");
+        //    return Vector3.zero; // handle error appropriately
+        //}
+
 
         return spawnPlane.position + randomOffset;
     }
