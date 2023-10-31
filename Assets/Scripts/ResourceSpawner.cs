@@ -29,15 +29,15 @@ public class ResourceSpawner : MonoBehaviour
 
     private IEnumerator SpawnResourceWithDistanceCheck()
     {
-        // Decide which resource to spawn
+        // decide which resource to spawn
         GameObject resourcePrefab = Random.Range(0f, 1f) > 0.5f ? stickPrefab : stonePrefab;
         Debug.Log("Choosing Resource to spawn");
 
-        // Calculate a random position within the bounds of the spawn plane
+        // calculate a random position within the bounds of the spawn plane
         Vector3 spawnPosition = CalculateRandomSpawnPosition();
         Debug.Log("Calculating Distance");
 
-        // Ensure the new position is a fair distance from the last spawn position
+        // ensure the new position is a fair distance from the last spawn position (this didn't work)
         //while (Vector3.Distance(spawnPosition, lastSpawnPosition) < 8f)
         //{
         //    spawnPosition = CalculateRandomSpawnPosition();
@@ -45,14 +45,14 @@ public class ResourceSpawner : MonoBehaviour
 
         lastSpawnPosition = spawnPosition;
 
-        // Manually set the height to avoid clipping into the ground
+        // manually set the height to avoid clipping into the ground
         spawnPosition = new Vector3(spawnPosition.x, 0.25f, spawnPosition.z); // Adjust the Y-coordinate (2.0f is just an example height)
 
-        // Spawn the selected resource at the calculated position
+        // spawn the selected resource at the calculated position
         Debug.Log("Resource has been generated");
         Instantiate(resourcePrefab, spawnPosition, Quaternion.identity);
 
-        // Set the next spawn time
+        // set the next spawn time
         Debug.Log("Setting spawn time");
         nextSpawnTime = Time.time + spawnInterval;
 
@@ -61,15 +61,20 @@ public class ResourceSpawner : MonoBehaviour
 
     private Vector3 CalculateRandomSpawnPosition()
     {
-        Vector3 randomOffset = new Vector3(
-            Random.Range(-spawnPlane.localScale.x / 2, spawnPlane.localScale.x / 2),
-            0f,
-            Random.Range(-spawnPlane.localScale.z / 2, spawnPlane.localScale.z / 2)
-        );
+        // get the Renderer component of the spawnPlane
+        Renderer renderer = spawnPlane.GetComponent<Renderer>();
+        if (renderer == null)
+        {
+            Debug.LogError("The spawnPlane is missing a Renderer component.");
+            return Vector3.zero; // Handle the error appropriately
+        }
 
-        return spawnPlane.position + randomOffset;
+        // calculate random positions within the bounds of the plane
+        float randomX = Random.Range(renderer.bounds.min.x, renderer.bounds.max.x);
+        float randomZ = Random.Range(renderer.bounds.min.z, renderer.bounds.max.z);
+
+        return new Vector3(randomX, 0f, randomZ);
     }
-
     //private Vector3 AdjustHeightToAvoidGround(Vector3 position)
     //{
     //    RaycastHit hit;
