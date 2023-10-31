@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ResourceSpawner : MonoBehaviour
 {
-    public GameObject stickPrefab; // Reference to the stick prefab.
-    public GameObject stonePrefab; // Reference to the stone prefab.
-    public Transform spawnPlane;   // The plane on which resources will spawn.
-    public float spawnInterval = 20f; // Time interval for resource spawning 
+    public GameObject stickPrefab;
+    public GameObject stonePrefab;
+    public Transform spawnPlane;   // the plane where resources will spawn
+    public float spawnInterval = 15f; // time interval
 
-    private int maxResourceCount = 3; // Maximum number of resources in the scene.
+    private int maxResourceCount = 5; // maximum number of resources in the scene
 
     private float nextSpawnTime;
     private Vector3 lastSpawnPosition;
@@ -23,54 +23,66 @@ public class ResourceSpawner : MonoBehaviour
     {
         if (Time.time >= nextSpawnTime && CountResources() < maxResourceCount)
         {
-            // Decide which resource to spawn (stick or stone).
-            GameObject resourcePrefab = Random.Range(0f, 1f) > 0.5f ? stickPrefab : stonePrefab;
-            Debug.Log("Choosing Resource to spawn");
-            // Calculate a random position within the bounds of the spawn plane.
-            Vector3 randomOffset = new Vector3(
-                Random.Range(-spawnPlane.localScale.x / 2, spawnPlane.localScale.x / 2),
-                0f,
-                Random.Range(-spawnPlane.localScale.z / 2, spawnPlane.localScale.z / 2)
-            );
-
-            Vector3 spawnPosition = spawnPlane.position + randomOffset;
-
-            // Ensure the new position is a safe distance from the last spawn position.
-            float minDistance = 5f; // Adjust as needed.
-            Debug.Log("Calculating Distance");
-            while (Vector3.Distance(spawnPosition, lastSpawnPosition) < minDistance)
-            {
-                randomOffset = new Vector3(
-                    Random.Range(-spawnPlane.localScale.x / 2, spawnPlane.localScale.x / 2),
-                    0f,
-                    Random.Range(-spawnPlane.localScale.z / 2, spawnPlane.localScale.z / 2)
-                );
-
-                spawnPosition = spawnPlane.position + randomOffset;
-            }
-
-            lastSpawnPosition = spawnPosition;
-
-            // Adjust the height to avoid clipping into the ground.
-            RaycastHit hit;
-            if (Physics.Raycast(spawnPosition + Vector3.up * 1.7f, Vector3.down, out hit, 100f))
-            {
-                spawnPosition = hit.point;
-            }
-
-            // Spawn the selected resource at the calculated position.
-            Debug.Log("Resource has been generated");
-            Instantiate(resourcePrefab, spawnPosition, Quaternion.identity);
-
-            // Set the next spawn time.
-            Debug.Log("Setting spawn time");
-            nextSpawnTime = Time.time + spawnInterval;
+            StartCoroutine(SpawnResourceWithDistanceCheck());
         }
     }
 
+    private IEnumerator SpawnResourceWithDistanceCheck()
+    {
+        // Decide which resource to spawn
+        GameObject resourcePrefab = Random.Range(0f, 1f) > 0.5f ? stickPrefab : stonePrefab;
+        Debug.Log("Choosing Resource to spawn");
+
+        // Calculate a random position within the bounds of the spawn plane
+        Vector3 spawnPosition = CalculateRandomSpawnPosition();
+        Debug.Log("Calculating Distance");
+
+        // Ensure the new position is a fair distance from the last spawn position
+        //while (Vector3.Distance(spawnPosition, lastSpawnPosition) < 8f)
+        //{
+        //    spawnPosition = CalculateRandomSpawnPosition();
+        //}
+
+        lastSpawnPosition = spawnPosition;
+
+        // Manually set the height to avoid clipping into the ground
+        spawnPosition = new Vector3(spawnPosition.x, 0.25f, spawnPosition.z); // Adjust the Y-coordinate (2.0f is just an example height)
+
+        // Spawn the selected resource at the calculated position
+        Debug.Log("Resource has been generated");
+        Instantiate(resourcePrefab, spawnPosition, Quaternion.identity);
+
+        // Set the next spawn time
+        Debug.Log("Setting spawn time");
+        nextSpawnTime = Time.time + spawnInterval;
+
+        yield return null;
+    }
+
+    private Vector3 CalculateRandomSpawnPosition()
+    {
+        Vector3 randomOffset = new Vector3(
+            Random.Range(-spawnPlane.localScale.x / 2, spawnPlane.localScale.x / 2),
+            0f,
+            Random.Range(-spawnPlane.localScale.z / 2, spawnPlane.localScale.z / 2)
+        );
+
+        return spawnPlane.position + randomOffset;
+    }
+
+    //private Vector3 AdjustHeightToAvoidGround(Vector3 position)
+    //{
+    //    RaycastHit hit;
+    //    if (Physics.Raycast(position + Vector3.up * 100f, Vector3.down, out hit, 100f))
+    //    {
+    //        return hit.point;
+    //    }
+    //    return position;
+    //}
+
     private int CountResources()
     {
-        // Count the number of resources in the scene (sticks and stones).
+        // count the number of resources in the scene
         GameObject[] sticks = GameObject.FindGameObjectsWithTag("Stick");
         GameObject[] stones = GameObject.FindGameObjectsWithTag("Stone");
 
