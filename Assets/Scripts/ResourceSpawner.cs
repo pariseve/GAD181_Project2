@@ -29,24 +29,26 @@ public class ResourceSpawner : MonoBehaviour
 
     private IEnumerator SpawnResourceWithDistanceCheck()
     {
-        // decide which resource to spawn
+        // Decide which resource to spawn
         GameObject resourcePrefab = Random.Range(0f, 1f) > 0.5f ? stickPrefab : stonePrefab;
         Debug.Log("Choosing Resource to spawn");
 
-        // calculate a random position within the bounds of the spawn plane
+        // Calculate a random position within the bounds of the spawn plane
         Vector3 spawnPosition = CalculateRandomSpawnPosition();
         Debug.Log("Calculating Distance");
+
 
         lastSpawnPosition = spawnPosition;
 
         // manually set the height to avoid clipping into the ground
         spawnPosition = new Vector3(spawnPosition.x, 0.25f, spawnPosition.z); 
 
-        // spawn the selected resource at the calculated position
+
+        // Spawn the selected resource at the calculated position
         Debug.Log("Resource has been generated");
         Instantiate(resourcePrefab, spawnPosition, Quaternion.identity);
 
-        // set the next spawn time
+        // Set the next spawn time
         Debug.Log("Setting spawn time");
         nextSpawnTime = Time.time + spawnInterval;
 
@@ -55,6 +57,7 @@ public class ResourceSpawner : MonoBehaviour
 
     private Vector3 CalculateRandomSpawnPosition()
     {
+    
         // get the renderer component of the spawnPlane
         Renderer renderer = spawnPlane.GetComponent<Renderer>();
         //if (renderer == null)
@@ -63,11 +66,8 @@ public class ResourceSpawner : MonoBehaviour
         //    return Vector3.zero; // handle error appropriately
         //}
 
-        // calculate random positions within the bounds of the plane
-        float randomX = Random.Range(renderer.bounds.min.x, renderer.bounds.max.x);
-        float randomZ = Random.Range(renderer.bounds.min.z, renderer.bounds.max.z);
 
-        return new Vector3(randomX, 0f, randomZ);
+        return spawnPlane.position + randomOffset;
     }
 
     //private Vector3 AdjustHeightToAvoidGround(Vector3 position)
