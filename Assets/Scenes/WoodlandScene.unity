@@ -1146,7 +1146,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.154951, y: 0, z: 0, w: 0.9879222}
-  m_LocalPosition: {x: -0.02545018, y: 4.4745574, z: -9.785943}
+  m_LocalPosition: {x: -0.024384202, y: 4.4745574, z: -9.785943}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1707,7 +1707,7 @@ MonoBehaviour:
   stonePrefab: {fileID: 7020251992856020426, guid: a1247ab08b1cb1449a649c75087efe1b,
     type: 3}
   spawnPlane: {fileID: 251144818}
-  spawnInterval: 5
+  spawnInterval: 15
 --- !u!4 &888788690
 Transform:
   m_ObjectHideFlags: 0
@@ -1788,7 +1788,7 @@ Transform:
   m_GameObject: {fileID: 1412044852}
   serializedVersion: 2
   m_LocalRotation: {x: 0.154951, y: -0, z: -0, w: 0.9879222}
-  m_LocalPosition: {x: -0.02545018, y: 4.4745574, z: -9.785943}
+  m_LocalPosition: {x: -0.024384202, y: 4.4745574, z: -9.785943}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2146,7 +2146,6 @@ CapsuleCollider:
   m_Height: 2.29
   m_Direction: 1
   m_Center: {x: 0, y: -0.05, z: 0}
-
 --- !u!65 &1838222752
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2236,7 +2235,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 3c61a239fe8e8c649828178e06063bb2, type: 2}
-
 --- !u!1 &1879203095
 GameObject:
   m_ObjectHideFlags: 0

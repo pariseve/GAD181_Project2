@@ -57,17 +57,19 @@ public class ResourceSpawner : MonoBehaviour
 
     private Vector3 CalculateRandomSpawnPosition()
     {
-    
-        // get the renderer component of the spawnPlane
+        // Get the Renderer component of the spawnPlane
         Renderer renderer = spawnPlane.GetComponent<Renderer>();
-        //if (renderer == null)
-        //{
-        //    Debug.LogError("The spawnPlane is missing a Renderer component.");
-        //    return Vector3.zero; // handle error appropriately
-        //}
+        if (renderer == null)
+        {
+            Debug.LogError("The spawnPlane is missing a Renderer component.");
+            return Vector3.zero; // Handle the error appropriately
+        }
 
+        // Calculate random positions within the bounds of the plane
+        float randomX = Random.Range(renderer.bounds.min.x, renderer.bounds.max.x);
+        float randomZ = Random.Range(renderer.bounds.min.z, renderer.bounds.max.z);
 
-        return spawnPlane.position + randomOffset;
+        return new Vector3(randomX, 0f, randomZ);
     }
 
     //private Vector3 AdjustHeightToAvoidGround(Vector3 position)
