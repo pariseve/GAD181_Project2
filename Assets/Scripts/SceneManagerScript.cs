@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagerScript : MonoBehaviour
 {
-    public string insideHouseScene = "InsideHouseScene"; 
+    public string insideHouseScene = "InsideHouseScene";
 
     private bool playerInRange = false;
 
