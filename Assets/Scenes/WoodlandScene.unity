@@ -1363,6 +1363,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wolf (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3507903122981311267, guid: 12bed7ac10c128c4eb75b151399bc56b,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504770324958884856, guid: 12bed7ac10c128c4eb75b151399bc56b,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7702955987677930987, guid: 12bed7ac10c128c4eb75b151399bc56b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1413,7 +1423,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8949391012324262509, guid: 12bed7ac10c128c4eb75b151399bc56b,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981317236253495414, guid: 12bed7ac10c128c4eb75b151399bc56b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5504770324958884856, guid: 12bed7ac10c128c4eb75b151399bc56b, type: 3}
+    - {fileID: 3507903122981311267, guid: 12bed7ac10c128c4eb75b151399bc56b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
