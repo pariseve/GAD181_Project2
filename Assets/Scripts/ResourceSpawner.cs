@@ -13,6 +13,7 @@ public class ResourceSpawner : MonoBehaviour
 
     private float nextSpawnTime;
     private Vector3 lastSpawnPosition;
+    private GameObject lastSpawnedResource;
 
     private void Start()
     {
@@ -29,27 +30,23 @@ public class ResourceSpawner : MonoBehaviour
 
     private IEnumerator SpawnResourceWithDistanceCheck()
     {
-        // Decide which resource to spawn
-        GameObject resourcePrefab = Random.Range(0f, 1f) > 0.5f ? stickPrefab : stonePrefab;
-        Debug.Log("Choosing Resource to spawn");
+        GameObject resourcePrefab;
 
-        // Calculate a random position within the bounds of the spawn plane
+        // Decide which resource to spawn, ensuring it's different from the last one
+        do
+        {
+            resourcePrefab = Random.Range(0f, 1f) > 0.5f ? stickPrefab : stonePrefab;
+        } while (resourcePrefab == lastSpawnedResource); // Repeat until it's different
+
+        lastSpawnedResource = resourcePrefab; // Update the last spawned resource
+
         Vector3 spawnPosition = CalculateRandomSpawnPosition();
-        Debug.Log("Calculating Distance");
-
-
         lastSpawnPosition = spawnPosition;
+        spawnPosition = new Vector3(spawnPosition.x, 0.25f, spawnPosition.z);
 
-        // manually set the height to avoid clipping into the ground
-        spawnPosition = new Vector3(spawnPosition.x, 0.25f, spawnPosition.z); 
-
-
-        // Spawn the selected resource at the calculated position
         Debug.Log("Resource has been generated");
         Instantiate(resourcePrefab, spawnPosition, Quaternion.identity);
 
-        // Set the next spawn time
-        Debug.Log("Setting spawn time");
         nextSpawnTime = Time.time + spawnInterval;
 
         yield return null;

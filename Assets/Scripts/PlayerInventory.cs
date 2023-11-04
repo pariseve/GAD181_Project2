@@ -23,17 +23,17 @@ public class PlayerInventory : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            inventory.Save();
-        }
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            inventory.Load();
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    inventory.Save();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Return))
+        //{
+        //    inventory.Load();
+        //}
     }
     private void OnApplicationQuit()
     {
-        inventory.Container.Items.Clear();
+        inventory.Container.Items = new InventorySlot[7];
     }
 }

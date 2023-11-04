@@ -12,49 +12,78 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
     public ItemDatabaseObject database;
     public Inventory Container;
 
+    public void onInventoryChanged()
+    {
+        SaveInventory();
+    }
+
     public void AddItem(ItemObject item, int amount)
     {
-        for (int i = 0; i < Container.Items.Count; i++)
+        for (int i = 0; i < Container.Items.Length; i++)
         {
-            if (Container.Items[i].item == item)
+            if (Container.Items[i].ID == item.Id)
             {
                 Container.Items[i].AddAmount(amount);
+                onInventoryChanged(); //trigger save when inventory changes
                 return;
             }
         }
-        Container.Items.Add(new InventorySlot(item.Id, item, amount));
+        SetEmptySlot(item, amount);
+        onInventoryChanged();
     }
 
-    public void Save()
+    public InventorySlot SetEmptySlot(ItemObject _item, int _amount)
     {
-        //string saveData = JsonUtility.ToJson(this, true);
-        //BinaryFormatter bf = new BinaryFormatter();
-        //FileStream file = File.Create(string.Concat(Application.persistentDataPath, savePath));
-        //bf.Serialize(file, saveData);
-        //file.Close();
+        for (int i = 0; i < Container.Items.Length; i++)
+        {
+            if (Container.Items[i].ID <= -1)
+            {
+                Container.Items[i].UpdateSlot(_item.Id, _item, _amount);
+                return Container.Items[i];
+            }
+        }
+        // handle the case where the inventory is full
+        return null;
     }
 
-    public void Load()
+    public void MoveItem(InventorySlot item1, InventorySlot item2)
     {
-        //if(File.Exists(string.Concat(Application.persistentDataPath, savePath)))
-        //{
-        //    BinaryFormatter bf = new BinaryFormatter();
-        //    FileStream file = File.Open(string.Concat(Application.persistentDataPath, savePath), FileMode.Open);
-        //    JsonUtility.FromJsonOverwrite(bf.Deserialize(file).ToString(), this);
-        //    file.Close();
-        //}
+        InventorySlot temp = new InventorySlot(item2.ID, item2.item, item2.amount);
+        item2.UpdateSlot(item1.ID, item1.item, item1.amount);
+        item1.UpdateSlot(temp.ID, temp.item, temp.amount);
+    }
+
+    public void RemoveItem()
+    {
+
+    }
+
+    private void SaveInventory()
+    {
+        string saveData = JsonUtility.ToJson(this, true);
+        PlayerPrefs.SetString("Inventory", saveData);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadInventory()
+    {
+        if (PlayerPrefs.HasKey("Inventory"))
+        {
+            string saveData = PlayerPrefs.GetString("Inventory");
+            JsonUtility.FromJsonOverwrite(saveData, this);
+        }
     }
 
     public void OnAfterDeserialize()
     {
-        for (int i = 0; i < Container.Items.Count; i++)
-        {
-            ItemObject itemObject;
-            if (database.GetItem.TryGetValue(Container.Items[i].ID, out itemObject))
-            {
-                Container.Items[i].item = itemObject;
-            }
-        }
+        //for (int i = 0; i < Container.Items.Count; i++)
+        //{
+        //    ItemObject itemObject;
+        //    if (database.GetItem.TryGetValue(Container.Items[i].ID, out itemObject))
+        //    {
+        //        Container.Items[i].item = itemObject;
+        //    }
+        //}
     }
 
     public void OnBeforeSerialize()
@@ -65,17 +94,31 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
 [System.Serializable]
 public class Inventory
 {
-    public List<InventorySlot> Items = new List<InventorySlot>();
+    public InventorySlot[] Items = new InventorySlot[7];
 }
 
 [System.Serializable]
 public class InventorySlot
 {
-    public int ID;
+    public int ID = -1;
     public ItemObject item;
     public int amount;
 
+    public InventorySlot()
+    {
+        ID = -1;
+        item = null;
+        amount = 0;
+    }
+
     public InventorySlot(int _id, ItemObject _item, int _amount)
+    {
+        ID = _id;
+        item = _item;
+        amount = _amount;
+    }
+
+    public void UpdateSlot(int _id, ItemObject _item, int _amount)
     {
         ID = _id;
         item = _item;
