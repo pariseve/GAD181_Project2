@@ -7,31 +7,39 @@ public class PlayerInventory : MonoBehaviour
     public InventoryObject inventory;
     public DisplayInventory displayInventory;
 
-    public void OnTriggerEnter(Collider other)
+    private GroundItem currentGroundItem; // Track the currently collided ground item
+
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Player has collided with item");
         var groundItem = other.GetComponent<GroundItem>();
         if (groundItem)
         {
-            ItemObject itemObject = groundItem.item;
-            inventory.AddItem(itemObject, 1);
-            // Call the UpdateDisplay method from the DisplayInventory component
-            displayInventory.UpdateDisplay();
-            Destroy(other.gameObject);
+            currentGroundItem = groundItem;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        var groundItem = other.GetComponent<GroundItem>();
+        if (groundItem == currentGroundItem)
+        {
+            currentGroundItem = null;
         }
     }
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    inventory.Save();
-        //}
-        //if (Input.GetKeyDown(KeyCode.Return))
-        //{
-        //    inventory.Load();
-        //}
+        if (Input.GetKeyDown(KeyCode.E) && currentGroundItem != null)
+        {
+            Debug.Log("Player picked up item");
+            ItemObject itemObject = currentGroundItem.item;
+            inventory.AddItem(itemObject, 1);
+            // Call the UpdateDisplay method from the DisplayInventory component
+            displayInventory.UpdateDisplay();
+            Destroy(currentGroundItem.gameObject);
+        }
     }
+
     private void OnApplicationQuit()
     {
         inventory.Container.Items = new InventorySlot[7];

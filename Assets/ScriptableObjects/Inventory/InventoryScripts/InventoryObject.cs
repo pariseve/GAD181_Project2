@@ -9,6 +9,7 @@ using System;
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
 public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
 {
+    public ItemObject selectedItem;
     public ItemDatabaseObject database;
     public Inventory Container;
 
@@ -64,6 +65,40 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
         }
     }
 
+    public void RemoveDisplayItem(ItemObject item)
+    {
+        for (int i = 0; i < Container.Items.Length; i++)
+        {
+            if (Container.Items[i].ID == item.Id)
+            {
+                if (Container.Items[i].amount > 1)
+                {
+                    // Decrease the display amount by 1 without affecting the stack size
+                    Container.Items[i].amount--;
+                }
+                else
+                {
+                    // If there's only one left in the display, remove the item from the display
+                    Container.Items[i].UpdateSlot(-1, null, 0);
+                }
+
+                onInventoryChanged(); // Trigger save when inventory changes
+                return;
+            }
+        }
+    }
+
+    public void DropSelectedItem(ItemObject item, Vector3 dropPosition)
+    {
+        if (item != null && item.prefab != null)
+        {
+            // Instantiate the item's prefab at the specified position.
+            Instantiate(item.prefab, dropPosition, Quaternion.identity);
+
+            // Now, you can remove the item from the inventory.
+            RemoveItem(item);
+        }
+    }
     private void SaveInventory()
     {
         string saveData = JsonUtility.ToJson(this, true);

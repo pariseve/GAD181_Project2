@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     public Rigidbody rb;
     public SpriteRenderer sr;
 
+    public DisplayInventory displayInventory;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -44,5 +46,20 @@ public class PlayerController : MonoBehaviour
         {
             sr.flipX = (x > 0);
         }
+
+        //if (Input.GetMouseButtonDown(1)) // Right-click
+        //{
+        //    // Determine the drop position in the game world.
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit playerControllerHit; // Remove this line
+
+        //    if (Physics.Raycast(ray, out playerControllerHit))
+        //    {
+        //        Vector3 dropPosition = playerControllerHit.point;
+
+        //        // Call the DropSelectedItem method in the DisplayInventory script.
+        //        displayInventory.DropSelectedItem(dropPosition);
+        //    }
+        //}
     }
 }

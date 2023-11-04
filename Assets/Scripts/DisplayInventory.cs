@@ -5,10 +5,12 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using System;
 
 public class DisplayInventory : MonoBehaviour
 {
     public MouseItem mouseItem = new MouseItem();
+    public GameObject playerCharacter;
 
     public GameObject inventoryPrefab;
     public InventoryObject inventory;
@@ -28,7 +30,20 @@ public class DisplayInventory : MonoBehaviour
     void Update()
     {
         UpdateDisplay();
+
+        if(Input.GetMouseButtonDown(1) && mouseItem.hoverItem != null)
+{
+            Vector3 characterPosition = playerCharacter.transform.position;
+            float desiredYLevel = 0.25f; // Set your desired Y-level here
+            Vector3 dropPosition = new Vector3(
+                characterPosition.x,
+                desiredYLevel,
+                characterPosition.z
+            );
+            inventory.DropSelectedItem(mouseItem.hoverItem.item, dropPosition);
+        }
     }
+
 
     public void UpdateDisplay()
     {
@@ -126,6 +141,26 @@ public class DisplayInventory : MonoBehaviour
         }
     }
 
+    public void DropSelectedItem(ItemObject item, Vector3 dropPosition)
+    {
+        if (item != null && item.prefab != null)
+        {
+            // Instantiate the item's prefab at the specified position.
+            GameObject droppedItem = Instantiate(item.prefab, dropPosition, Quaternion.identity);
+
+            // Remove exactly one from the display without affecting the stack size
+            inventory.RemoveDisplayItem(item);
+
+            // Trigger inventory change when dropping an item.
+            inventory.onInventoryChanged();
+        }
+    }
+
+    private void RemoveItem(ItemObject item)
+    {
+        throw new NotImplementedException();
+    }
+
     public Vector3 GetPosition(int i)
     {
         if (NUMBER_OF_COLUM != 0)
@@ -138,6 +173,19 @@ public class DisplayInventory : MonoBehaviour
             // For example, if you want to center an item in this case:
             return new Vector3(0, 0, 0);
         }
+    }
+
+    Vector3 GetMouseWorldPosition()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            return hit.point;
+        }
+
+        return Vector3.zero;
     }
 }
 public class MouseItem
