@@ -53,9 +53,15 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
         item1.UpdateSlot(temp.ID, temp.item, temp.amount);
     }
 
-    public void RemoveItem()
+    public void RemoveItem(ItemObject item)
     {
-
+        for (int i = 0; i < Container.Items.Length; i++)
+        {
+            if (Container.Items[i].item == item)
+            {
+                Container.Items[i].UpdateSlot(-1, null, 0);
+            }
+        }
     }
 
     private void SaveInventory()

@@ -112,7 +112,8 @@ public class DisplayInventory : MonoBehaviour
         }
         else
         {
-
+            // The item was dragged out of the inventory, so remove it from the inventory.
+            inventory.RemoveItem(itemsDisplayed[obj].item);
         }
         Destroy(mouseItem.obj);
         mouseItem.item = null;
