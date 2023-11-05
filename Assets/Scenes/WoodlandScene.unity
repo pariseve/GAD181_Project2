@@ -2321,11 +2321,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8297375220117085190, guid: e2d490de1611ec943bd94233d5acadaf,
-        type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 1669130817}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2d490de1611ec943bd94233d5acadaf, type: 3}
 --- !u!4 &1660773372 stripped
 Transform:
@@ -2366,31 +2362,6 @@ Transform:
   - {fileID: 1873365527}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1669130814 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8297375220117085190, guid: e2d490de1611ec943bd94233d5acadaf,
-    type: 3}
-  m_PrefabInstance: {fileID: 1660773371}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1669130817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1669130814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efe32a57fd5b2264b9e6c468c41cfd7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  range: 10
 --- !u!1 &1838222745
 GameObject:
   m_ObjectHideFlags: 0

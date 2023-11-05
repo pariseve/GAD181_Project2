@@ -177,6 +177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5000589107889668961}
   - component: {fileID: 3040253848112677639}
+  - component: {fileID: 1466115090511202354}
   - component: {fileID: 1833265589371055188}
   m_Layer: 0
   m_Name: Bear
@@ -223,6 +224,25 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.92475283, y: 2.6991205, z: 0.5279373}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1466115090511202354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8297375220117085190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efe32a57fd5b2264b9e6c468c41cfd7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  range: 10
 --- !u!195 &1833265589371055188
 NavMeshAgent:
   m_ObjectHideFlags: 0

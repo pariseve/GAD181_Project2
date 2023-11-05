@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class WolfManager : MonoBehaviour
 {
     GameObject player;
-    Transform spriteTransform; // Added reference to the sprite's transform
+    Transform spriteTransform;
 
     NavMeshAgent agent;
 
@@ -17,18 +17,21 @@ public class WolfManager : MonoBehaviour
     bool walkPointSet;
     [SerializeField] float range;
 
+    [SerializeField] float sightRange, attackRange;
+    bool playerInSight, playerInAttackRange;
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.Find("Player");
-        spriteTransform = transform.GetChild(0); // Assuming the sprite is the first child of the GameObject
+        spriteTransform = transform.GetChild(0);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player had died");
+            Debug.Log("Player has died");
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
@@ -37,13 +40,21 @@ public class WolfManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Patrol();
+        playerInSight = Physics.CheckSphere(transform.position, sightRange, playerLayer);
+        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
+
+        if(!playerInSight && !playerInAttackRange) Patrol();
+        if(playerInSight && !playerInAttackRange) Chase();
 
         // Make the sprite face the camera
         spriteTransform.LookAt(Camera.main.transform);
         spriteTransform.eulerAngles = new Vector3(0, spriteTransform.eulerAngles.y, 0); // Constrain rotation to prevent spinning
     }
 
+    private void Chase()
+    {
+        agent.SetDestination(player.transform.position);
+    }
     void Patrol()
     {
         if (!walkPointSet) SearchForDest();

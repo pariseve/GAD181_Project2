@@ -73,11 +73,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
-  range: 0
+    m_Bits: 128
+  range: 15
+  sightRange: 5
+  attackRange: 1
 --- !u!195 &3882845738557483731
 NavMeshAgent:
   m_ObjectHideFlags: 0
