@@ -127,8 +127,8 @@ public class DisplayInventory : MonoBehaviour
         }
         else
         {
-            // The item was dragged out of the inventory, so remove it from the inventory.
-            inventory.RemoveItem(itemsDisplayed[obj].item);
+            // The item was dragged out of the inventory, so remove it from the display.
+            inventory.RemoveDisplayItem(itemsDisplayed[obj].item); // Corrected this line
         }
         Destroy(mouseItem.obj);
         mouseItem.item = null;
@@ -158,8 +158,9 @@ public class DisplayInventory : MonoBehaviour
 
     private void RemoveItem(ItemObject item)
     {
-        throw new NotImplementedException();
+        inventory.RemoveItem(item, 1); // Remove one item
     }
+
 
     public Vector3 GetPosition(int i)
     {
