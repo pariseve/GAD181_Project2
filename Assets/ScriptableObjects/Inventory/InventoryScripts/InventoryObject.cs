@@ -10,7 +10,7 @@ using System;
 public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
 {
     public ItemObject selectedItem;
-    public ItemDataBaseObject database;
+    public ItemObject database;
     public Inventory Container;
 
     public void onInventoryChanged()

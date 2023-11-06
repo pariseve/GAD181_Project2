@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class CraftingRecipe : ScriptableObject
 {
-    public ItemDataBaseObject itemToCraft;
+    public ItemObject itemToCraft;
     public ResourceCost[] costs;
 }
 
 [System.Serializable]
 public class ResourceCost
 {
-    public ItemDataBaseObject item;
+    public ItemObject item;
     public int quantity;
 }
