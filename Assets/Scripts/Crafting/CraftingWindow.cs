@@ -38,5 +38,10 @@ public class CraftingWindow : MonoBehaviour
         }
 
         Inventory.instance.AddItem(recipe.itemToCraft);
+
+        for(int i = 0; i < recipeUIs.Length; i++)
+        {
+            recipeUIs[i].UpdateCanCraft();
+        }
     }
 }

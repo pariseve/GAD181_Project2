@@ -9,6 +9,10 @@ public class ItemObject : ScriptableObject, ISerializationCallbackReceiver
     public ItemObject[] Items;
     public Dictionary<int, ItemObject> GetItem = new Dictionary<int, ItemObject>();
 
+    protected ItemObject()
+    {
+    }
+
     public void OnAfterDeserialize()
     {
         for (int i = 0; i < Items.Length; i++)

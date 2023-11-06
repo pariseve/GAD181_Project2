@@ -9,7 +9,7 @@ public enum ItemType
     Resources,
     Traps
 }
-public abstract class ItemObject : ScriptableObject
+public class ItemObject : ScriptableObject
 {
     public int Id;
     public Sprite uiDisplay;

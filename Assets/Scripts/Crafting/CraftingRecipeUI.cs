@@ -1,18 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using Unity.VisualScripting;
 
 public class CraftingRecipeUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public CraftingRecipe recipe;
+    public Image backgroundImage;
+    public Image icon;
+    public TextMeshProUGUI itemName;
+    public Image[] resourceCosts;
+
+    public Color canCraftColor;
+    public Color cannotCraftColor;
+    private bool canCraft;
+
+    void OnEnable()
     {
-        
+        UpdateCanCraft();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateCanCraft ()
     {
-        
+        canCraft = true;
+
+        for(int i = 0; i < recipe.costs.Length; i++)
+        {
+            if (!Inventory.instance.HasItems(recipe.costs[i].item, recipe.costs[i].quantity))
+            {
+                canCraft = false;
+                break;
+            }
+        }
+
+        backgroundImage.color = canCraft ? canCraftColor : cannotCraftColor;
     }
+
+    private void Start()
+    {
+        icon.sprite = recipe.itemToCraft.icon;
+        itemName.text = recipe.itemToCraft.displayName;
+
+        for(int i = 0; i < resourceCosts.Length; i++)
+        {
+            if (i < recipe.costs.Length)
+            {
+                resourceCosts[i].gameObject.SetActive(true);
+                resourceCosts[i].sprite = recipe.costs[i].item.icon;
+                resourceCosts[i].transform.GetComponentInChildren<TextMeshProUGUI>().text = recipe.costs[i].quantity.ToString();
+            }
+            else
+                resourceCosts[i].gameObject.SetActive(false);
+        }
+    }
+
+    public void OnClickButton()
+    {
+        if (canCraft)
+        {
+            CraftingWindow.instance.Craft(recipe);
+        }
+    }
+
 }
