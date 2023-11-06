@@ -10,7 +10,7 @@ using System;
 public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
 {
     public ItemObject selectedItem;
-    public ItemDatabaseObject database;
+    public ItemDataBaseObject database;
     public Inventory Container;
 
     public void onInventoryChanged()
@@ -135,6 +135,7 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
 [System.Serializable]
 public class Inventory
 {
+    internal static object instance;
     public InventorySlot[] Items = new InventorySlot[7];
 }
 
