@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Crafting Recipe", menuName = "New Crafting Recipe")]
-
 public class CraftingRecipe : ScriptableObject
 {
-    public ItemObject itemToCraft;
+    public Item itemToCraft;
     public ResourceCost[] costs;
 }
 
-[System.Serializable]
 public class ResourceCost
 {
-    public ItemObject item;
+    public Item item;
     public int quantity;
 }
