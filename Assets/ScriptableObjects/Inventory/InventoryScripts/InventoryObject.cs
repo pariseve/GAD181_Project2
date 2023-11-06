@@ -25,7 +25,7 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
             if (Container.Items[i].ID == item.Id)
             {
                 Container.Items[i].AddAmount(amount);
-                onInventoryChanged(); //trigger save when inventory changes
+                onInventoryChanged(); // Trigger save when inventory changes
                 return;
             }
         }
@@ -43,7 +43,7 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
                 return Container.Items[i];
             }
         }
-        // handle the case where the inventory is full
+        // Handle the case where the inventory is full
         return null;
     }
 
@@ -54,13 +54,27 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
         item1.UpdateSlot(temp.ID, temp.item, temp.amount);
     }
 
-    public void RemoveItem(ItemObject item)
+    public void RemoveItem(ItemObject item, int amount)
     {
         for (int i = 0; i < Container.Items.Length; i++)
         {
             if (Container.Items[i].item == item)
             {
-                Container.Items[i].UpdateSlot(-1, null, 0);
+                if (Container.Items[i].amount >= amount)
+                {
+                    // Decrease the item amount in the inventory slot.
+                    Container.Items[i].amount -= amount;
+
+                    // If the item's amount reaches 0 or less, remove the item from the slot.
+                    if (Container.Items[i].amount <= 0)
+                    {
+                        Container.Items[i].UpdateSlot(-1, null, 0);
+                    }
+
+                    // Trigger the inventory change event.
+                    onInventoryChanged();
+                    return;
+                }
             }
         }
     }
@@ -96,9 +110,23 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
             Instantiate(item.prefab, dropPosition, Quaternion.identity);
 
             // Now, you can remove the item from the inventory.
-            RemoveItem(item);
+            RemoveItem(item, 1); // Remove one item
         }
     }
+
+    public bool HasItem(ItemObject item, int amount)
+    {
+        // Loop through the inventory slots and check if the item is present with the required amount.
+        for (int i = 0; i < Container.Items.Length; i++)
+        {
+            if (Container.Items[i].item == item && Container.Items[i].amount >= amount)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void SaveInventory()
     {
         string saveData = JsonUtility.ToJson(this, true);
@@ -117,14 +145,6 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        //for (int i = 0; i < Container.Items.Count; i++)
-        //{
-        //    ItemObject itemObject;
-        //    if (database.GetItem.TryGetValue(Container.Items[i].ID, out itemObject))
-        //    {
-        //        Container.Items[i].item = itemObject;
-        //    }
-        //}
     }
 
     public void OnBeforeSerialize()
