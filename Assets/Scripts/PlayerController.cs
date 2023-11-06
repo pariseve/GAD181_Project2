@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5f;
+    public float sprintSpeed = 10f; // Adjust the sprint speed as needed
     public float groundDistance = 0.1f;
     public float smoothingFactor = 10f; // Adjust this value for smoother movement
     public LayerMask groundLayer;
@@ -14,6 +13,8 @@ public class PlayerController : MonoBehaviour
     public SpriteRenderer sr;
 
     public DisplayInventory displayInventory;
+
+    private bool isSprinting = false;
 
     void Start()
     {
@@ -36,10 +37,24 @@ public class PlayerController : MonoBehaviour
 
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
-        Vector3 moveDirection = new Vector3(x, 0, y);
+
+        // Check if the player is sprinting
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            isSprinting = true;
+        }
+        else
+        {
+            isSprinting = false;
+        }
+
+        // Adjust speed based on sprinting state
+        float currentSpeed = isSprinting ? sprintSpeed : speed;
+
+        Vector3 moveDirection = new Vector3(x, 0, y) * currentSpeed;
 
         // Apply movement directly to the Rigidbody for smoother physics
-        rb.velocity = moveDirection * speed;
+        rb.velocity = moveDirection;
 
         // Handle character orientation (flipping sprite)
         if (x != 0)
