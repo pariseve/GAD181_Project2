@@ -42,6 +42,15 @@ public class BearManager : MonoBehaviour
         // Make the sprite face the camera
         spriteTransform.LookAt(Camera.main.transform);
         spriteTransform.eulerAngles = new Vector3(0, spriteTransform.eulerAngles.y, 0);
+        // flip the sprite based on the direction of movement
+        Vector3 moveDirection = bear.destination - transform.position;
+        float x = moveDirection.x;
+
+        // Get the SpriteRenderer component of the child GameObject
+        SpriteRenderer spriteRenderer = spriteTransform.GetComponent<SpriteRenderer>();
+
+        // Flip the sprite
+        spriteRenderer.flipX = (x > 0); // Change to '<' for the correct flip direction
     }
 
     void Patrol()
