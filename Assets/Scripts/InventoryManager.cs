@@ -1,33 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class InventoryManager : MonoBehaviour
 {
     public InventoryObject inventory;
-    private static InventoryManager instance;
+    private static InventoryManager _instance;
 
-    private void Awake()
+
+
+    // Singleton pattern
+    public static InventoryManager Instance
     {
-        if (instance == null)
+        get
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<InventoryManager>();
+
+                if (_instance == null)
+                {
+                    GameObject go = new GameObject("InventoryManager");
+                    _instance = go.AddComponent<InventoryManager>();
+                    DontDestroyOnLoad(go);
+                }
+            }
+            return _instance;
         }
     }
 
     private void OnApplicationQuit()
     {
         inventory.Container.Items = new InventorySlot[7];
-        SaveInventory(); // Save the inventory when quitting the application
+        SaveInventory();
     }
 
-    private void SaveInventory()
+    public void SaveInventory()
     {
         string saveData = JsonUtility.ToJson(inventory, true);
         PlayerPrefs.SetString("Inventory", saveData);
@@ -40,7 +47,7 @@ public class InventoryManager : MonoBehaviour
         SaveInventory();
     }
 
-    private void LoadInventory()
+    public void LoadInventory()
     {
         if (PlayerPrefs.HasKey("Inventory"))
         {

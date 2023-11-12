@@ -37,11 +37,22 @@ public class PlayerInventory : MonoBehaviour
             // Call the UpdateDisplay method from the DisplayInventory component
             displayInventory.UpdateDisplay();
             Destroy(currentGroundItem.gameObject);
+
+            // Save inventory state after picking up an item
+            SaveInventoryState();
         }
     }
 
     private void OnApplicationQuit()
     {
-        inventory.Container.Items = new InventorySlot[7];
+        // Save inventory state when the application quits
+        SaveInventoryState();
+    }
+
+    private void SaveInventoryState()
+    {
+        string saveData = JsonUtility.ToJson(inventory, true);
+        PlayerPrefs.SetString("Inventory", saveData);
+        PlayerPrefs.Save();
     }
 }

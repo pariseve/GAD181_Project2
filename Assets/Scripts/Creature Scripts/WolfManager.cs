@@ -33,6 +33,14 @@ public class WolfManager : MonoBehaviour
         {
             Debug.Log("Player has died");
 
+            // Clear the player's inventory
+            InventoryManager inventoryManager = FindObjectOfType<InventoryManager>();
+            if (inventoryManager != null)
+            {
+                inventoryManager.ResetInventory();
+            }
+
+            // Reload the scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
