@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38e9089cfbaafbe46974c20fe282d6e7, type: 3}
   m_Name: Large Trap
   m_EditorClassIdentifier: 
-  Id: 5
+  Id: 6
   uiDisplay: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   prefab: {fileID: 3101321786800663606, guid: 0612e16c60097c445a811dcf78826b75, type: 3}
   type: 2

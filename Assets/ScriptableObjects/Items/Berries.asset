@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7621b8fa6d93f6458b950ebe5c936a6, type: 3}
   m_Name: Berries
   m_EditorClassIdentifier: 
-  Id: 4
+  Id: 3
   uiDisplay: {fileID: 21300000, guid: 5535162c36797cb44b0a030d3196124b, type: 3}
+  prefab: {fileID: 0}
   type: 1
   description: A bunch of sweet berries - this treat is favoured by rabbits.

@@ -6,6 +6,7 @@ using UnityEngine;
 public class SacrificeObject : ItemObject
 {
     public int sacrificeValue;
+    public string satiationAmount;
     public void Awake()
     {
         type = ItemType.Sacrifices;

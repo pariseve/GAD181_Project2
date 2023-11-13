@@ -10,6 +10,10 @@ TagManager:
   - LargeTrap
   - Trap
   - RabbitCarcass
+  - Berries
+  - Bush
+  - Grass
+  - Beast
   layers:
   - Default
   - TransparentFX

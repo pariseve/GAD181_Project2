@@ -11,6 +11,9 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
     public void OnAfterDeserialize()
     {
+        // Clear the dictionary before adding items
+        GetItem.Clear();
+
         for (int i = 0; i < Items.Length; i++)
         {
             Items[i].Id = i;
@@ -20,11 +23,6 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
     public void OnBeforeSerialize()
     {
-        //GetItem = new Dictionary<int, ItemObject>();
+        // No need to modify anything here
     }
-
-    //internal int GetID(Item item)
-    //{
-    //    throw new NotImplementedException();
-    //}
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7621b8fa6d93f6458b950ebe5c936a6, type: 3}
   m_Name: Stones
   m_EditorClassIdentifier: 
-  Id: 3
+  Id: 2
   uiDisplay: {fileID: 21300000, guid: d71a0ca6bc91a804a8f4c8ea8769d3e9, type: 3}
   prefab: {fileID: 7020251992856020426, guid: a1247ab08b1cb1449a649c75087efe1b, type: 3}
   type: 1

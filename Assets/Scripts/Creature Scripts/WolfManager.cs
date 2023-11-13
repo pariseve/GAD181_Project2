@@ -11,7 +11,7 @@ public class WolfManager : MonoBehaviour
 
     NavMeshAgent agent;
 
-    [SerializeField] LayerMask groundLayer, playerLayer;
+    [SerializeField] LayerMask groundLayer, playerLayer, trapLayer; // Add trapLayer
 
     Vector3 destPoint;
     bool walkPointSet;
@@ -19,6 +19,8 @@ public class WolfManager : MonoBehaviour
 
     [SerializeField] float sightRange, attackRange;
     bool playerInSight, playerInAttackRange;
+
+    [SerializeField] GameObject deadWolfPrefab; // Reference to the dead wolf prefab
 
     private void Start()
     {
@@ -43,6 +45,29 @@ public class WolfManager : MonoBehaviour
             // Reload the scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+
+        // Check if the wolf entered the trap zone
+        if (other.CompareTag("LargeTrap"))
+        {
+            Debug.Log("Wolf caught in trap");
+
+            // Destroy the wolf and instantiate the dead wolf in its place
+            DestroyWolf();
+        }
+    }
+
+    private void DestroyWolf()
+    {
+        // Get the position of the wolf before destruction
+        Vector3 wolfPosition = transform.position;
+
+        // Destroy the wolf
+        Destroy(gameObject);
+
+        // Instantiate the dead wolf at the wolf's original position
+        Instantiate(deadWolfPrefab, wolfPosition, Quaternion.identity);
+
+        // Note: You might want to add additional logic or effects here
     }
 
     // Update is called once per frame
@@ -97,3 +122,4 @@ public class WolfManager : MonoBehaviour
         }
     }
 }
+
