@@ -1,17 +1,20 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.AI;
 
 public class WolfManager : MonoBehaviour
 {
+    public bool isDead = false;
+    public float respawnTimer = 0f;
     GameObject player;
     Transform spriteTransform;
 
     NavMeshAgent agent;
+    AudioSource audioSource; // New variable for AudioSource
 
     [SerializeField] LayerMask groundLayer, playerLayer;
+    [SerializeField] AudioClip detectionSound; // New variable for detection sound
 
     Vector3 destPoint;
     bool walkPointSet;
@@ -25,6 +28,13 @@ public class WolfManager : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.Find("Player");
         spriteTransform = transform.GetChild(0);
+
+        RespawnWolf();
+
+        // Add the AudioSource component to the GameObject
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.clip = detectionSound; // Assign the detection sound
     }
 
     private void OnTriggerEnter(Collider other)
@@ -48,16 +58,27 @@ public class WolfManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isDead)
+        {
+            respawnTimer += Time.deltaTime;
+
+            if (respawnTimer >= GetRespawnTime())
+            {
+                RespawnWolf();
+            }
+        }
+
         playerInSight = Physics.CheckSphere(transform.position, sightRange, playerLayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
 
-        if(!playerInSight && !playerInAttackRange) Patrol();
-        if(playerInSight && !playerInAttackRange) Chase();
+        if (!playerInSight && !playerInAttackRange) Patrol();
+        if (playerInSight && !playerInAttackRange) Chase();
 
         // Make the sprite face the camera
         spriteTransform.LookAt(Camera.main.transform);
         spriteTransform.eulerAngles = new Vector3(0, spriteTransform.eulerAngles.y, 0); // Constrain rotation to prevent spinning
-                                                                                        // lock the rotation to face the z axis
+
+        // lock the rotation to face the z axis
         transform.rotation = Quaternion.Euler(0, 0, 0);
 
         // flip the sprite based on the direction of movement
@@ -69,12 +90,42 @@ public class WolfManager : MonoBehaviour
 
         // Flip the sprite
         spriteRenderer.flipX = (x > 0); // Change to '<' for the correct flip direction
+    }
 
+    private Vector3 GetInitialSpawnPosition()
+    {
+        // Example implementation: Randomize the initial spawn position within a specified range
+        float x = Random.Range(-10f, 10f);
+        float z = Random.Range(-10f, 10f);
+        return new Vector3(x, 0f, z);
+    }
+
+    private void RespawnWolf()
+    {
+        // Reset position and other attributes
+        transform.position = GetInitialSpawnPosition();
+
+        // Additional respawn logic goes here
+
+        isDead = false;
+        respawnTimer = 0f;
+    }
+
+    private float GetRespawnTime()
+    {
+        // Example implementation: Return a fixed respawn time (adjust as needed)
+        return 30f;
     }
 
     private void Chase()
     {
         agent.SetDestination(player.transform.position);
+
+        // Play the detection sound if not already playing
+        if (!audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
     }
 
     void Patrol()

@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 5f;
+    public float walkSpeed = 5f;
+    public float sprintSpeed = 10f;
     public float groundDistance = 0.1f;
     public float smoothingFactor = 10f;
     public LayerMask groundLayer;
     public Rigidbody rb;
     public SpriteRenderer sr;
     public Animator animator;
-
     public DisplayInventory displayInventory;
+
+    public AudioClip walkSound;
+    private AudioSource audioSource;
 
     void Start()
     {
@@ -29,6 +30,11 @@ public class PlayerController : MonoBehaviour
             meshCollider = gameObject.AddComponent<MeshCollider>();
             // Configure MeshCollider as needed
         }
+
+        // Initialize audio source
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = walkSound;
+        audioSource.loop = true;
     }
 
     void Update()
@@ -46,7 +52,9 @@ public class PlayerController : MonoBehaviour
         float z = Input.GetAxis("Vertical");
         Vector3 moveDirection = new Vector3(x, 0, z);
 
-        rb.velocity = moveDirection * speed;
+        // Sprinting mechanic
+        float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed;
+        rb.velocity = moveDirection * currentSpeed;
 
         // Handle character orientation (flipping sprite)
         if (x != 0 || z != 0) // Check if moving in either x or z direction
@@ -57,15 +65,37 @@ public class PlayerController : MonoBehaviour
 
             // Flip the character in the opposite direction
             Vector3 localScale = transform.localScale;
-            localScale.x = Mathf.Abs(localScale.x) * -Mathf.Sign(x); 
-            localScale.z = Mathf.Abs(localScale.z) * -Mathf.Sign(z); 
+            localScale.x = Mathf.Abs(localScale.x) * -Mathf.Sign(x);
+            localScale.z = Mathf.Abs(localScale.z) * -Mathf.Sign(z);
             transform.localScale = localScale;
+
+            // Play walking sound
+            if (!audioSource.isPlaying && isRunning)
+            {
+                audioSource.Play();
+            }
+            else if (audioSource.isPlaying && !isRunning)
+            {
+                audioSource.Stop();
+            }
         }
         else
         {
             // If not moving, set IsRunning to false
             animator.SetBool("IsRunning", false);
+
+            // Stop walking sound when not moving
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
         }
+
+        // Your existing code...
+    }
+}
+
+        // Your existing code...
 
         //if (Input.GetMouseButtonDown(1)) // Right-click
         //{
@@ -81,5 +111,3 @@ public class PlayerController : MonoBehaviour
         //        displayInventory.DropSelectedItem(dropPosition);
         //    }
         //}
-    }
-}

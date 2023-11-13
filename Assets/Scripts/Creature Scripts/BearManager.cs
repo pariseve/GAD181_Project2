@@ -6,6 +6,8 @@ using UnityEngine.AI;
 
 public class BearManager : MonoBehaviour
 {
+    public bool isDead = false;
+    public float respawnTimer = 0f;
     GameObject player;
     Transform spriteTransform;
 
@@ -17,11 +19,17 @@ public class BearManager : MonoBehaviour
     bool walkPointSet;
     [SerializeField] float range;
 
+    // Added variables
+    bool playerInSight, playerInAttackRange;
+    [SerializeField] float sightRange, attackRange;
+
     private void Start()
     {
         bear = GetComponent<NavMeshAgent>();
         player = GameObject.Find("Player");
         spriteTransform = transform.GetChild(0);
+
+        RespawnBear();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -37,7 +45,21 @@ public class BearManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Patrol();
+        if (isDead)
+        {
+            respawnTimer += Time.deltaTime;
+
+            if (respawnTimer >= GetRespawnTime())
+            {
+                RespawnBear();
+            }
+        }
+
+        playerInSight = Physics.CheckSphere(transform.position, sightRange, playerLayer);
+        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
+
+        if (!playerInSight && !playerInAttackRange) Patrol();
+        if (playerInSight && !playerInAttackRange) Chase();
 
         // Make the sprite face the camera
         spriteTransform.LookAt(Camera.main.transform);
@@ -51,6 +73,35 @@ public class BearManager : MonoBehaviour
 
         // Flip the sprite
         spriteRenderer.flipX = (x > 0); // Change to '<' for the correct flip direction
+    }
+    private Vector3 GetInitialSpawnPosition()
+    {
+        // Example implementation: Randomize the initial spawn position within a specified range
+        float x = Random.Range(-10f, 10f);
+        float z = Random.Range(-10f, 10f);
+        return new Vector3(x, 0f, z);
+    }
+
+    private void RespawnBear()
+    {
+        // Reset position and other attributes
+        transform.position = GetInitialSpawnPosition();
+
+        // Additional respawn logic goes here
+
+        isDead = false;
+        respawnTimer = 0f;
+    }
+
+    private float GetRespawnTime()
+    {
+        //Return a fixed respawn time
+        return 30f;
+    }
+
+    private void Chase()
+    {
+        bear.SetDestination(player.transform.position);
     }
 
     void Patrol()

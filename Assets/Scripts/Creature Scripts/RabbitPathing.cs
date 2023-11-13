@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI; 
+using UnityEngine.AI;
 
 public class RabbitPathing : MonoBehaviour
 {
+    public bool isDead = false;
+    public float respawnTimer = 0f;
     public NavMeshAgent rabbit;
     public float range; // radius of sphere
     private SpriteRenderer sr;
@@ -12,12 +14,24 @@ public class RabbitPathing : MonoBehaviour
     void Start()
     {
         rabbit = GetComponent<NavMeshAgent>();
-        sr = GetComponentInChildren<SpriteRenderer>();  
+        sr = GetComponentInChildren<SpriteRenderer>();
         rabbit.updateRotation = false; // disable NavMeshAgent's rotation
+
+        RespawnRabbit();
     }
 
     void FixedUpdate()
     {
+        if (isDead)
+        {
+            respawnTimer += Time.deltaTime;
+
+            if (respawnTimer >= GetRespawnTime())
+            {
+                RespawnRabbit();
+            }
+        }
+
         if (rabbit.remainingDistance <= rabbit.stoppingDistance)
         {
             Vector3 randomPoint = RandomNavMeshPoint();
@@ -47,5 +61,30 @@ public class RabbitPathing : MonoBehaviour
             }
         }
         return randomPoint; // return the last generated point if no valid point was found
+    }
+
+    private Vector3 GetInitialSpawnPosition()
+    {
+        // Example implementation: Randomize the initial spawn position within a specified range
+        float x = Random.Range(-10f, 10f);
+        float z = Random.Range(-10f, 10f);
+        return new Vector3(x, 0f, z);
+    }
+
+    private void RespawnRabbit()
+    {
+        // Reset position and other attributes
+        transform.position = GetInitialSpawnPosition();
+
+        // Additional respawn logic goes here
+
+        isDead = false;
+        respawnTimer = 0f;
+    }
+
+    private float GetRespawnTime()
+    {
+        // Example implementation: Return a fixed respawn time (adjust as needed)
+        return 30f;
     }
 }

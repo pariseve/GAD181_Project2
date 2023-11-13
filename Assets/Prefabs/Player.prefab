@@ -205,7 +205,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05af08f8526e042409312a6696567cf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.5
+  walkSpeed: 3
+  sprintSpeed: 5
   groundDistance: 1.2
   smoothingFactor: -1
   groundLayer:
@@ -215,6 +216,7 @@ MonoBehaviour:
   sr: {fileID: 2992661486351780847}
   animator: {fileID: 0}
   displayInventory: {fileID: 0}
+  walkSound: {fileID: 8300000, guid: 386bb1ce18dcc7c46be0653409f751e9, type: 3}
 --- !u!114 &3518743810771496686
 MonoBehaviour:
   m_ObjectHideFlags: 0
