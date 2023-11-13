@@ -6,6 +6,7 @@ public class ResourceSpawner : MonoBehaviour
 {
     public GameObject stickPrefab;
     public GameObject stonePrefab;
+    public GameObject grassPrefab;
     public Transform spawnPlane;   // the plane where resources will spawn
     public float spawnInterval = 15f; // time interval
 
@@ -35,7 +36,19 @@ public class ResourceSpawner : MonoBehaviour
         // Decide which resource to spawn, ensuring it's different from the last one
         do
         {
-            resourcePrefab = Random.Range(0f, 1f) > 0.5f ? stickPrefab : stonePrefab;
+            float randomValue = Random.Range(0f, 1f);
+            if (randomValue < 0.33f)
+            {
+                resourcePrefab = stickPrefab;
+            }
+            else if (randomValue < 0.66f)
+            {
+                resourcePrefab = stonePrefab;
+            }
+            else
+            {
+                resourcePrefab = grassPrefab;
+            }
         } while (resourcePrefab == lastSpawnedResource); // Repeat until it's different
 
         lastSpawnedResource = resourcePrefab; // Update the last spawned resource
@@ -69,22 +82,13 @@ public class ResourceSpawner : MonoBehaviour
         return new Vector3(randomX, 0f, randomZ);
     }
 
-    //private Vector3 AdjustHeightToAvoidGround(Vector3 position)
-    //{
-    //    RaycastHit hit;
-    //    if (Physics.Raycast(position + Vector3.up * 100f, Vector3.down, out hit, 100f))
-    //    {
-    //        return hit.point;
-    //    }
-    //    return position;
-    //}
-
     private int CountResources()
     {
         // count the number of resources in the scene
         GameObject[] sticks = GameObject.FindGameObjectsWithTag("Stick");
         GameObject[] stones = GameObject.FindGameObjectsWithTag("Stone");
+        GameObject[] grass = GameObject.FindGameObjectsWithTag("Grass");
 
-        return sticks.Length + stones.Length;
+        return sticks.Length + stones.Length + grass.Length;
     }
 }

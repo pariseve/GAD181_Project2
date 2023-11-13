@@ -7,6 +7,14 @@ TagManager:
   - Stick
   - Stone
   - Animal
+  - SmallTrap
+  - LargeTrap
+  - Trap
+  - RabbitCarcass
+  - Berries
+  - Bush
+  - Grass
+  - Beast
   layers:
   - Default
   - TransparentFX

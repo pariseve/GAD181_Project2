@@ -6,8 +6,11 @@ public class PlayerInventory : MonoBehaviour
 {
     public InventoryObject inventory;
     public DisplayInventory displayInventory;
+    public GameObject bushPrefab; // Reference to the bush prefab
+    public GameObject berriesPrefab; // Reference to the berries prefab
 
     private GroundItem currentGroundItem; // Track the currently collided ground item
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -38,8 +41,44 @@ public class PlayerInventory : MonoBehaviour
             displayInventory.UpdateDisplay();
             Destroy(currentGroundItem.gameObject);
 
+            // Replace the berry bush with the bush prefab
+            if (currentGroundItem.CompareTag("Berries"))
+            {
+                Vector3 position = currentGroundItem.transform.position;
+
+                // Instantiate the bush prefab in place of the berry bush
+                Instantiate(bushPrefab, position, Quaternion.identity);
+
+                // Start the coroutine to respawn the berry bush after 5 seconds
+                StartCoroutine(RespawnBerryBush(position));
+            }
+
             // Save inventory state after picking up an item
             SaveInventoryState();
+        }
+    }
+
+    private IEnumerator RespawnBerryBush(Vector3 position)
+    {
+        yield return new WaitForSeconds(15f); // Wait for 15 seconds
+
+        // Destroy any existing bush at the position after the delay
+        DestroyExistingBush(position);
+
+        // Instantiate the berry bush at the same position
+        Instantiate(berriesPrefab, position, Quaternion.identity);
+    }
+
+    private void DestroyExistingBush(Vector3 position)
+    {
+        Collider[] colliders = Physics.OverlapSphere(position, 1f);
+        foreach (Collider collider in colliders)
+        {
+            if (collider.CompareTag("Bush"))
+            {
+                Debug.Log("Destroying bush");
+                Destroy(collider.gameObject);
+            }
         }
     }
 
@@ -56,3 +95,8 @@ public class PlayerInventory : MonoBehaviour
         PlayerPrefs.Save();
     }
 }
+
+
+
+
+

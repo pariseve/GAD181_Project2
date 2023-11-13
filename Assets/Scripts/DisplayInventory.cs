@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using System;
 
 public class DisplayInventory : MonoBehaviour
@@ -31,7 +32,7 @@ public class DisplayInventory : MonoBehaviour
     {
         UpdateDisplay();
 
-        if(Input.GetMouseButtonDown(1) && mouseItem.hoverItem != null)
+        if(Input.GetMouseButtonDown(0) && mouseItem.hoverItem != null)
 {
             Vector3 characterPosition = playerCharacter.transform.position;
             float desiredYLevel = 0.25f; // Set your desired Y-level here
@@ -41,6 +42,10 @@ public class DisplayInventory : MonoBehaviour
                 characterPosition.z
             );
             inventory.DropSelectedItem(mouseItem.hoverItem.item, dropPosition);
+        }
+        else if (Input.GetMouseButtonDown(1) && mouseItem.hoverItem != null)
+        {
+            GiveItemToBeast(mouseItem.hoverItem.item);
         }
     }
 
@@ -119,8 +124,31 @@ public class DisplayInventory : MonoBehaviour
         mouseItem.obj = mouseObject;
         mouseItem.item = itemsDisplayed[obj]; // Access the item using the obj parameter
     }
-    public void OnDragEnd(GameObject obj)
+   public void OnDragEnd(GameObject obj)
+{
+    bool droppedOnBeast = false;
+
+    // Check if the mouse pointer is over the beast
+    if (mouseItem.hoverObj != null && mouseItem.hoverObj.CompareTag("Beast"))
     {
+        droppedOnBeast = true;
+    }
+
+    if (droppedOnBeast)
+    {
+        // Attempt to get the BeastScript from the hovered object
+        BeastScript beastScript = mouseItem.hoverObj.GetComponent<BeastScript>();
+
+        // Check if the BeastScript is not null
+        if (beastScript != null && mouseItem.item != null)
+        {
+            // Give the item to the beast
+            beastScript.ReceiveSacrifice(mouseItem.item.item as SacrificeObject);
+        }
+    }
+    else
+    {
+        // The item was not dropped on the beast, so either move it or keep it in the inventory.
         if (mouseItem.hoverObj)
         {
             inventory.MoveItem(itemsDisplayed[obj], itemsDisplayed[mouseItem.hoverObj]);
@@ -128,11 +156,14 @@ public class DisplayInventory : MonoBehaviour
         else
         {
             // The item was dragged out of the inventory, so remove it from the display.
-            inventory.RemoveDisplayItem(itemsDisplayed[obj].item); // Corrected this line
+            inventory.RemoveDisplayItem(itemsDisplayed[obj].item);
         }
-        Destroy(mouseItem.obj);
-        mouseItem.item = null;
     }
+
+    Destroy(mouseItem.obj);
+    mouseItem.item = null;
+}
+
     public void OnDrag(GameObject obj)
     {
         if (mouseItem.obj != null)
@@ -156,6 +187,7 @@ public class DisplayInventory : MonoBehaviour
         }
     }
 
+
     private void RemoveItem(ItemObject item)
     {
         inventory.RemoveItem(item, 1); // Remove one item
@@ -174,6 +206,41 @@ public class DisplayInventory : MonoBehaviour
             // For example, if you want to center an item in this case:
             return new Vector3(0, 0, 0);
         }
+    }
+
+    private void GiveItemToBeast(ItemObject item)
+    {
+        Debug.Log("GiveItemToBeast method called");
+
+        // Check if the player is in the "insidehousescene"
+        if (IsPlayerInsideHouseScene())
+        {
+            Debug.Log("Inside house scene");
+
+            // Attempt to get the BeastScript from the beast GameObject
+            BeastScript beastScript = GameObject.FindWithTag("Beast").GetComponent<BeastScript>();
+
+            // Check if the BeastScript is not null
+            if (beastScript != null && item != null && item is SacrificeObject)
+            {
+                Debug.Log("BeastScript is not null and item is a SacrificeObject");
+                // Give the sacrifice item to the beast
+                beastScript.ReceiveSacrifice(item as SacrificeObject);
+
+                // Remove the item from the inventory
+                inventory.RemoveItem(item, 1);
+
+                // Trigger inventory change
+                inventory.onInventoryChanged();
+            }
+        }
+    }
+
+    private bool IsPlayerInsideHouseScene()
+    {
+        Debug.Log("Inside house scene");
+        // Check if the current scene is the "insidehousescene"
+        return SceneManager.GetActiveScene().name == "InsideHouseScene";
     }
 
     Vector3 GetMouseWorldPosition()

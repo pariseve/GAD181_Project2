@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 3659561446119455966}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05, y: 0.56, z: 1.36}
-  m_LocalScale: {x: 0.94643813, y: 1.3400002, z: 7.004696}
+  m_LocalPosition: {x: 0, y: 0.193, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7721799573947374543}
@@ -109,9 +109,9 @@ Transform:
   m_GameObject: {fileID: 5333629805426017467}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.08580767, y: 0.54, z: 1.8264503}
-  m_LocalScale: {x: 0.11584393, y: 0.19112535, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0.326, z: 0}
+  m_LocalScale: {x: 0.12, y: 0.12, z: 0.12}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7721799573947374543}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -196,9 +196,9 @@ Transform:
   m_GameObject: {fileID: 6004444636843456891}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.39, y: 0.081, z: -2.15}
-  m_LocalScale: {x: 1, y: 0.60611486, z: 0.11584392}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: 0, y: 0.146, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7734352349738781168}
   - {fileID: 2053637565540913866}
@@ -221,10 +221,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 1.2, y: 1.2, z: 8}
-  m_Center: {x: -0.03, y: 0.5, z: 1.73}
+  m_Size: {x: 0.59, y: 0.55, z: 0.24}
+  m_Center: {x: 0, y: 0.15, z: 0}
 --- !u!54 &6692252057341633725
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -287,4 +287,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rabbit: {fileID: 3792687676968801961}
+  rabbitCarcassPrefab: {fileID: 1987422135458244098, guid: da4dbe9f81963af40af2a11c235a7a62,
+    type: 3}
   range: 10

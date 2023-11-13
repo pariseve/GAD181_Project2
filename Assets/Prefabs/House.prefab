@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 215c10c9b20c26e4fad0f4c8ebc6c45c, type: 2}
+  - {fileID: 2100000, guid: 131e29547c3910542ad3c70610443e61, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -173,3 +173,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   insideHouseScene: InsideHouseScene
+  woodlandScene: WoodlandScene

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7621b8fa6d93f6458b950ebe5c936a6, type: 3}
   m_Name: Sticks
   m_EditorClassIdentifier: 
-  Id: 2
+  Id: 1
   uiDisplay: {fileID: 21300000, guid: 74d9977d7317dda4fbe6be2f605272c1, type: 3}
   prefab: {fileID: 82005487034054227, guid: 9c210d25516d1c141ae48af13aeffe19, type: 3}
   type: 1

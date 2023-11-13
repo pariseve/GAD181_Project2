@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38e9089cfbaafbe46974c20fe282d6e7, type: 3}
   m_Name: Small Trap
   m_EditorClassIdentifier: 
-  Id: 1
+  Id: 5
   uiDisplay: {fileID: 21300000, guid: c252e34f8b73510488a152180c4585d1, type: 3}
   prefab: {fileID: 32336449867634004, guid: b48a5b2a2e639d5438382aedd028407a, type: 3}
   type: 2
   description: A small contraption, perfect for capturing a small creature.
   atk: 5
+  attractedCreature: 0
