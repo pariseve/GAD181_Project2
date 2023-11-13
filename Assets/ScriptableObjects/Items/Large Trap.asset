@@ -18,3 +18,4 @@ MonoBehaviour:
   type: 2
   description: A large trap, perfect for capturing a range of fearsome creatures.
   atk: 10
+  attractedCreature: 1

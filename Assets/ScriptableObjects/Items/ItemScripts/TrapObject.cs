@@ -6,8 +6,15 @@ using UnityEngine;
 public class TrapObject : ItemObject
 {
     public float atk;
+    public CreatureType attractedCreature;
     public void Awake()
     {
         type = ItemType.Traps;
     }
+}
+
+public enum CreatureType
+{
+    Rabbit,
+    Wolf
 }
