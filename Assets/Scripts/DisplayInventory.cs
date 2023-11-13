@@ -156,6 +156,7 @@ public class DisplayInventory : MonoBehaviour
         }
     }
 
+
     private void RemoveItem(ItemObject item)
     {
         inventory.RemoveItem(item, 1); // Remove one item
