@@ -71,6 +71,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1f6626ad6da401458d8ec9ec439b9e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDead: 0
+  respawnTimer: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -81,6 +83,7 @@ MonoBehaviour:
   range: 15
   sightRange: 5
   attackRange: 1
+  deadWolfPrefab: {fileID: 0}
 --- !u!195 &3882845738557483731
 NavMeshAgent:
   m_ObjectHideFlags: 0

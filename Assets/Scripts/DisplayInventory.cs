@@ -28,12 +28,12 @@ public class DisplayInventory : MonoBehaviour
         CreateDisplay();
     }
 
-    void Update()
+    private void Update()
     {
         UpdateDisplay();
 
-        if(Input.GetMouseButtonDown(0) && mouseItem.hoverItem != null)
-{
+        if (Input.GetMouseButtonDown(0) && mouseItem.hoverItem != null && !FindAnyObjectByType<BeastScript>())
+        {
             Vector3 characterPosition = playerCharacter.transform.position;
             float desiredYLevel = 0.25f; // Set your desired Y-level here
             Vector3 dropPosition = new Vector3(
@@ -45,10 +45,10 @@ public class DisplayInventory : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(1) && mouseItem.hoverItem != null)
         {
+            Debug.Log("give item to beast");
             GiveItemToBeast(mouseItem.hoverItem.item);
         }
     }
-
 
     public void UpdateDisplay()
     {
@@ -218,27 +218,35 @@ public class DisplayInventory : MonoBehaviour
             Debug.Log("Inside house scene");
 
             // Attempt to get the BeastScript from the beast GameObject
-            BeastScript beastScript = GameObject.FindWithTag("Beast").GetComponent<BeastScript>();
+            GameObject beastObject = GameObject.FindWithTag("Beast");
 
-            // Check if the BeastScript is not null
-            if (beastScript != null && item != null && item is SacrificeObject)
+            if (beastObject != null)
             {
-                Debug.Log("BeastScript is not null and item is a SacrificeObject");
-                // Give the sacrifice item to the beast
-                beastScript.ReceiveSacrifice(item as SacrificeObject);
+                BeastScript beastScript = beastObject.GetComponent<BeastScript>();
 
-                // Remove the item from the inventory
-                inventory.RemoveItem(item, 1);
+                // Check if the BeastScript is not null
+                if (beastScript != null && item != null && item is SacrificeObject)
+                {
+                    Debug.Log("BeastScript is not null and item is a SacrificeObject");
+                    // Give the sacrifice item to the beast
+                    beastScript.ReceiveSacrifice(item as SacrificeObject);
 
-                // Trigger inventory change
-                inventory.onInventoryChanged();
+                    // Remove the item from the inventory
+                    inventory.RemoveItem(item, 1);
+
+                    // Trigger inventory change
+                    inventory.onInventoryChanged();
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Beast not found in the scene. Make sure the Beast GameObject is correctly tagged.");
             }
         }
     }
 
     private bool IsPlayerInsideHouseScene()
     {
-        Debug.Log("Inside house scene");
         // Check if the current scene is the "insidehousescene"
         return SceneManager.GetActiveScene().name == "InsideHouseScene";
     }

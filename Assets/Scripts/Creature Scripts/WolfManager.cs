@@ -11,11 +11,10 @@ public class WolfManager : MonoBehaviour
     Transform spriteTransform;
 
     NavMeshAgent agent;
-    AudioSource audioSource; // New variable for AudioSource
+    AudioSource audioSource;
 
     [SerializeField] LayerMask groundLayer, playerLayer;
-    [SerializeField] AudioClip detectionSound; // New variable for detection sound
-    [SerializeField] LayerMask groundLayer, playerLayer, trapLayer; // Add trapLayer
+    [SerializeField] AudioClip detectionSound;
 
     Vector3 destPoint;
     bool walkPointSet;
@@ -24,7 +23,10 @@ public class WolfManager : MonoBehaviour
     [SerializeField] float sightRange, attackRange;
     bool playerInSight, playerInAttackRange;
 
-    [SerializeField] GameObject deadWolfPrefab; // Reference to the dead wolf prefab
+    [SerializeField] GameObject deadWolfPrefab;
+
+    // Reference to the currently placed trap
+    private GameObject placedTrap;
 
     private void Start()
     {
@@ -34,10 +36,9 @@ public class WolfManager : MonoBehaviour
 
         RespawnWolf();
 
-        // Add the AudioSource component to the GameObject
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
-        audioSource.clip = detectionSound; // Assign the detection sound
+        audioSource.clip = detectionSound;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -62,27 +63,43 @@ public class WolfManager : MonoBehaviour
         {
             Debug.Log("Wolf caught in trap");
 
-            // Destroy the wolf and instantiate the dead wolf in its place
+            // Set the placedTrap reference to the current trap
+            placedTrap = other.gameObject;
+
+            // Destroy the wolf and trap
             DestroyWolf();
         }
     }
 
     private void DestroyWolf()
     {
+        // Check if the wolf has already been destroyed
+        if (isDead)
+        {
+            return;
+        }
+
         // Get the position of the wolf before destruction
         Vector3 wolfPosition = transform.position;
+
+        // Set isDead to true to prevent repeated destruction
+        isDead = true;
 
         // Destroy the wolf
         Destroy(gameObject);
 
         // Instantiate the dead wolf at the wolf's original position
-        Instantiate(deadWolfPrefab, wolfPosition, Quaternion.identity);
+        Instantiate(deadWolfPrefab, new Vector3(wolfPosition.x, 0.1f, wolfPosition.z), Quaternion.identity);
+
+        // Destroy the large trap
+        if (placedTrap != null)
+        {
+            Destroy(placedTrap);
+        }
 
         // Note: You might want to add additional logic or effects here
     }
-
-    // Update is called once per frame
-    void Update()
+void Update()
     {
         if (isDead)
         {
@@ -100,27 +117,19 @@ public class WolfManager : MonoBehaviour
         if (!playerInSight && !playerInAttackRange) Patrol();
         if (playerInSight && !playerInAttackRange) Chase();
 
-        // Make the sprite face the camera
         spriteTransform.LookAt(Camera.main.transform);
-        spriteTransform.eulerAngles = new Vector3(0, spriteTransform.eulerAngles.y, 0); // Constrain rotation to prevent spinning
-
-        // lock the rotation to face the z axis
+        spriteTransform.eulerAngles = new Vector3(0, spriteTransform.eulerAngles.y, 0);
         transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        // flip the sprite based on the direction of movement
         Vector3 moveDirection = agent.destination - transform.position;
         float x = moveDirection.x;
 
-        // Get the SpriteRenderer component of the child GameObject
         SpriteRenderer spriteRenderer = spriteTransform.GetComponent<SpriteRenderer>();
-
-        // Flip the sprite
-        spriteRenderer.flipX = (x > 0); // Change to '<' for the correct flip direction
+        spriteRenderer.flipX = (x > 0);
     }
 
     private Vector3 GetInitialSpawnPosition()
     {
-        // Example implementation: Randomize the initial spawn position within a specified range
         float x = Random.Range(-10f, 10f);
         float z = Random.Range(-10f, 10f);
         return new Vector3(x, 0f, z);
@@ -128,18 +137,13 @@ public class WolfManager : MonoBehaviour
 
     private void RespawnWolf()
     {
-        // Reset position and other attributes
         transform.position = GetInitialSpawnPosition();
-
-        // Additional respawn logic goes here
-
         isDead = false;
         respawnTimer = 0f;
     }
 
     private float GetRespawnTime()
     {
-        // Example implementation: Return a fixed respawn time (adjust as needed)
         return 30f;
     }
 
@@ -148,9 +152,10 @@ public class WolfManager : MonoBehaviour
         agent.SetDestination(player.transform.position);
 
         // Play the detection sound if not already playing
+        AudioSource audioSource = GetComponent<AudioSource>();
         if (!audioSource.isPlaying)
         {
-            audioSource.Play();
+            audioSource.PlayOneShot(detectionSound);
         }
     }
 
@@ -174,4 +179,3 @@ public class WolfManager : MonoBehaviour
         }
     }
 }
-

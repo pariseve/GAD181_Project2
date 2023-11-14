@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Wolf Carcass
   m_EditorClassIdentifier: 
   Id: 7
-  uiDisplay: {fileID: 21300000, guid: 59ee3a8624760714c910eb976c3f60c3, type: 3}
-  prefab: {fileID: 8040519457304983653, guid: 7dfa08eae2899344a92ee8d6b95733c8, type: 3}
+  uiDisplay: {fileID: 21300000, guid: 6b4fa67ed0a00a3439c9b297379a24aa, type: 3}
+  prefab: {fileID: 9027390046732541203, guid: 7dfa08eae2899344a92ee8d6b95733c8, type: 3}
   type: 0
   description: The deceased wolf, it's body will provide the beast with a moderate
     satisfaction.
-  sacrificeValue: 0
+  sacrificeValue: 15
   satiationAmount: quite

@@ -2149,7 +2149,7 @@ PrefabInstance:
         type: 3}
       propertyPath: displayInventory
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 381273488}
     - target: {fileID: 6803394971867449366, guid: 606cb9e8318efb343a8d138621689724,
         type: 3}
       propertyPath: m_Enabled
